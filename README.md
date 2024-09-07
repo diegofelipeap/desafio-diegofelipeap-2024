@@ -111,4 +111,3 @@ O arquivo principal do projeto está localizado em `src/recintos-zoo.js`, onde a
 ## Considerações Finais
 
 A solução foi desenvolvida seguindo as especificações do desafio, garantindo que as regras para alocação de animais em recintos sejam respeitadas. A estrutura do código foi mantida conforme solicitado, permitindo que os testes automáticos possam validar a solução de maneira adequada.
-```
