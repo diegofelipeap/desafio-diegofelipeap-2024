@@ -1,135 +1,114 @@
-# RECINTOS DO ZOO
+# Desafio Zoológico - Recintos de Animais
 
-## COMO BAIXAR O CÓDIGO E SUBMETER MINHA SOLUÇÃO?
-Para completar a etapa do desafio você terá que baixar a estrutura do código aqui na Azure, resolver o desafio usando Javascript e entregá-lo no repositório no seu github.
+## Descrição
 
-### BAIXANDO A ESTRUTURA
-Para baixar a estrutura no formato zip, basta clicar neste [link](https://dev.azure.com/db-tecnologia/99dbf7ce-dadd-40d3-b827-e1648cb6a262/_apis/git/repositories/877e7dfb-78ea-465e-bd88-9dbf83120933/items?path=/&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=main&resolveLfs=true&%24format=zip&api-version=5.0&download=true).
+Este projeto foi desenvolvido como parte do desafio proposto para identificar os recintos onde novos animais podem se sentir confortáveis no zoológico. O objetivo foi implementar a lógica que segue as regras estabelecidas para acomodar diferentes espécies de animais em recintos apropriados, considerando bioma, espaço e regras de convivência.
 
-### ENTREGANDO O DESAFIO
-Após resolver o desafio e validá-lo com os testes (mais detalhes nos tópicos abaixo), você terá que criar um repositório **público** no [Github](https://github.com/) com o **nome** de `desafio-seuUsername-2024` (substitua "seuUsername" pelo seu usuário do GitHub) e colocar o código na **branch** `main`.
+## Alterações e Soluções Implementadas
 
-Se você ainda não teve contato com essa ferramenta, não tem problema. Separamos um material para lhe ajudar nessa etapa: [Como usar Git e Github na prática](https://www.youtube.com/watch?v=UBAX-13g8OM).
+1. **Cálculo de Espaço Livre e Biomas**:
+   - A lógica para calcular o espaço livre foi implementada para garantir que novos animais possam ser adicionados apenas se houver espaço suficiente no recinto.
+   - Biomas foram verificados para garantir que os animais são alocados apenas em recintos que possuem o bioma adequado para eles.
 
-## O DESAFIO
-Olá! Você foi contratado para ajudar na organização de um zoológico.
-Sua missão será construir a lógica para indicar os recintos onde novos animais se sintam confortáveis.
+2. **Regras de Convivência**:
+   - **Carnívoros**: Apenas podem habitar com outros animais da mesma espécie.
+   - **Hipopótamos**: Podem habitar com outras espécies apenas se o recinto tiver o bioma "savana e rio".
+   - **Macacos**: Não se sentem confortáveis sozinhos e precisam estar em recintos com outros animais (mesmo que sejam da mesma espécie).
 
-### RECINTOS EXISTENTES
+3. **Cálculo de Espaço Extra**:
+   - Quando há mais de uma espécie no recinto, 1 espaço adicional é considerado como ocupado. Esta regra foi implementada para garantir que a convivência de diferentes espécies seja calculada corretamente.
 
- O zoológico possui os seguintes recintos disponíveis.
+4. **Validação de Erros**:
+   - **Animal Inválido**: Se um animal que não pertence ao zoológico for informado, a mensagem de erro `"Animal inválido"` é retornada.
+   - **Quantidade Inválida**: Se a quantidade informada for inválida (não numérica ou menor/igual a 0), a mensagem `"Quantidade inválida"` é retornada.
+   - **Sem Recinto Viável**: Se não houver espaço suficiente ou o bioma for incompatível, a mensagem `"Não há recinto viável"` é retornada.
 
-  | número    | bioma             | tamanho total |  animais existentes |
-  |-----------|-------------------|---------------|---------------------|
-  | 1         | savana            |   10          |   3 macacos         |
-  | 2         | floresta          |    5          |   vazio             |
-  | 3         | savana e rio      |    7          |  1 gazela           |
-  | 4         | rio               |    8          |   vazio             |
-  | 5         | savana            |    9          |  1 leão             |
+## Como Baixar e Testar o Projeto Localmente
 
-### ANIMAIS
+### Pré-requisitos
 
- O zoológico só está habilitado a tratar dos animais abaixo.
- A tabela mostra o espaço que cada indivíduo ocupa e em quais biomas se adapta.
+- **Node.js** (v14 ou superior)
+- **NPM** (Node Package Manager)
 
-  | espécie    | tamanho | bioma                |
-  |------------|---------|----------------------|
-  | LEAO       |   3     |  savana              |
-  | LEOPARDO   |   2     |  savana              |
-  | CROCODILO  |   3     |  rio                 |
-  | MACACO     |   1     |  savana ou floresta  |
-  | GAZELA     |   2     |  savana              |
-  | HIPOPOTAMO |   4     |  savana ou rio       |
+### Passos para rodar o projeto:
 
-### REGRAS PARA ENCONTRAR UM RECINTO
+1. **Clone o repositório**:
+   ```bash
+   git clone https://github.com/seuUsername/desafio-seuUsername-2024.git
+   ```
 
-1) Um animal se sente confortável se está num bioma adequado e com espaço suficiente para cada indivíduo
-2) Animais carnívoros devem habitar somente com a própria espécie
-3) Animais já presentes no recinto devem continuar confortáveis com a inclusão do(s) novo(s)
-4) Hipopótamo(s) só tolera(m) outras espécies estando num recinto com savana e rio
-5) Um macaco não se sente confortável sem outro animal no recinto, seja da mesma ou outra espécie
-6) Quando há mais de uma espécie no mesmo recinto, é preciso considerar 1 espaço extra ocupado
-7) Não é possível separar os lotes de animais nem trocar os animais que já existem de recinto (eles são muito apegados!).
-Por exemplo, se chegar um lote de 12 macacos, não é possível colocar 6 em 2 recintos.
+2. **Entre no diretório do projeto**:
+   ```bash
+   cd desafio-seuUsername-2024
+   ```
 
-### ENTRADAS E SAÍDAS
+3. **Instale as dependências**:
+   ```bash
+   npm install
+   ```
 
-1) O programa deve receber tipo e quantidade de animal (nessa ordem)
-2) O programa deve retornar uma estrutura contendo a lista de todos os recintos viáveis ordenada pelo número do recinto (caso existam) e a mensagem de erro (caso exista)
-3) A lista de recintos viáveis deve indicar o espaço livre que restaria após a inclusão do(s) animal(is) e o espaço total, no formato "Recinto nro (espaço livre: valorlivre total: valortotal)"
-4) Caso animal informado seja inválido, apresentar erro "Animal inválido"
-5) Caso quantidade informada seja inválida, apresentar erro "Quantidade inválida"
-6) Caso não haja recinto possível, apresentar erro "Não há recinto viável"
+4. **Rode os testes**:
+   Para validar a solução com os testes existentes e garantir que todas as regras estão sendo seguidas, execute o comando:
+   ```bash
+   npm test
+   ```
 
-### EXEMPLOS
+### Estrutura do Projeto
 
-Entrada para um caso válido
-```js
-"MACACO", 2
-```
-Saída
-```js
-{
-  recintosViaveis: ["Recinto 1 (espaço livre: 5 total: 10)", 
-   "Recinto 2 (espaço livre: 3 total: 5)", 
-   "Recinto 3 (espaço livre: 2 total: 7)"]
-}
-```
+O arquivo principal do projeto está localizado em `src/recintos-zoo.js`, onde a lógica para encontrar os recintos viáveis foi implementada. O arquivo de testes `src/recintos-zoo.test.js` contém os casos de teste para validar a solução.
 
-Entrada para um caso inválido
-```js
-"UNICORNIO", 1
-```
-Saída
-```js
-{
-  erro: "Animal inválido"
-}
-```
+### Funções Principais:
 
-### O CÓDIGO
-Você está recebendo uma estrutura básica para desenvolver a lógica do desafio. O arquivo principal está localizado dentro da pasta `src` e se chama `recintos-zoo.js`. Você pode desenvolver a sua lógica criando outros arquivos, métodos e até mesmo outras classes, porém o resultado deve poder ser obtido através do método `analisaRecintos`.
+- `analisaRecintos(animal, quantidade)`:
+  - Recebe como parâmetros o tipo de animal e a quantidade.
+  - Retorna a lista de recintos viáveis ou uma mensagem de erro.
+  - Exemplo de uso:
+    ```js
+    const recintosZoo = new RecintosZoo();
+    const resultado = recintosZoo.analisaRecintos('MACACO', 2);
+    console.log(resultado);
+    ```
 
-> **ALERTA**:
-> É importante que essa estrutura básica não seja alterada, pois as etapas automáticas da nossa validação dependem disso. Conseguir executar os passos descritos mais adiante na seção `VALIDANDO A SOLUÇÃO` também ajudará você a verificar que seu código segue a estrutura definida.
+### Exemplos de Entrada e Saída:
 
-Exemplo de chamada
-```js
-  new RecintosZoo().analisaRecintos('MACACO', 2);
-```
+1. **Entrada Válida**:
+   ```js
+   new RecintosZoo().analisaRecintos('MACACO', 2);
+   ```
+   **Saída**:
+   ```json
+   {
+     "recintosViaveis": [
+       "Recinto 1 (espaço livre: 5 total: 10)",
+       "Recinto 2 (espaço livre: 3 total: 5)",
+       "Recinto 3 (espaço livre: 3 total: 7)"
+     ]
+   }
+   ```
 
-### INSTALANDO E RODANDO NA SUA MÁQUINA
-1. Instalar o [Node](https://nodejs.org/en/)
-2. Instalar dependencias do projeto com o seguinte comando:
-```bash
-npm install
-```
+2. **Entrada Inválida**:
+   ```js
+   new RecintosZoo().analisaRecintos('UNICORNIO', 1);
+   ```
+   **Saída**:
+   ```json
+   {
+     "erro": "Animal inválido"
+   }
+   ```
 
-### VALIDANDO A SOLUÇÃO
-Junto com a estrutura básica você está recebendo alguns cenários de testes no arquivo `recintos-zoo.test.js` para auxiliar na validação da sua solução. Recomendamos que você crie mais casos de teste para aumentar a confiabilidade da sua solução.
-Para testar sua solução com os cenários existentes ou novos, rode o seguinte comando:
-```bash
-npm test
+## Estrutura de Pastas
+
+```plaintext
+.
+├── src
+│   ├── recintos-zoo.js        # Lógica principal do desafio
+│   └── recintos-zoo.test.js    # Testes para validar a solução
+├── package.json                # Dependências do projeto
+└── README.md                   # Instruções do projeto
 ```
 
-Para saber mais consulte a [Documentação do Jest](https://jestjs.io/pt-BR/docs/getting-started).
+## Considerações Finais
 
-### VALIDANDO A ENTREGA
-Para garantir que seu desafio vai ser considerado entregue, revise os seguintes pontos:
-
-#### GIT
-O repositório deve ser **público** e ter o **nome** e **branch** indicados na seção `ENTREGANDO O DESAFIO`.
-
-Para verificar que o repositório é público, deslogue-se do github e tente ver o código. Se conseguir, nós também conseguimos! Lembrando que vamos usar o link para o usuário informado durante o cadastro na Gupy. Veja [como alterar a visibilidade](https://docs.github.com/pt/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/setting-repository-visibility#changing-a-repositorys-visibility).
-
-#### CÓDIGO
-A solução deve ser entregue em **javascript** e a **estrutura de pastas e arquivos** deve seguir o indicado na seção `O CÓDIGO`.
-
-O **export** da classe deve ser mantido da seguinte maneira para compatibilidade com o arquivo de testes:
-```js
-export { RecintosZoo as RecintosZoo };
+A solução foi desenvolvida seguindo as especificações do desafio, garantindo que as regras para alocação de animais em recintos sejam respeitadas. A estrutura do código foi mantida conforme solicitado, permitindo que os testes automáticos possam validar a solução de maneira adequada.
 ```
-
-Se todos os passos forem seguidos corretamente, você terá um repositório como o da figura abaixo (lembrando que é permitido criar mais arquivos), onde `seuUsername` é o seu usuário do GitHub, que você informou no questionário da Gupy.
-
-![Exemplo de repositório](https://startdbstorage.blob.core.windows.net/filecontainer/imagem-estrutura.png)
